@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-char * defangIPaddr(char * address){
+char * defangIPaddr_snprintf(char * address){
 	int size=strlen(address)+7;
 	char *ans=malloc(sizeof(char)*size);
 	while(address && *address!='\r' && *address!='\n' && *address!='\0'){
@@ -13,6 +13,22 @@ char * defangIPaddr(char * address){
 		address++;
 	}
 	ans[size]='\0';
+	return ans;
+}
+char * defangIPaddr(char * address){
+	int size=strlen(address)+7,i=0;
+	char *ans=malloc(sizeof(char)*size);
+	while(address && *address!='\r' && *address!='\n' && *address!='\0'){   
+		if(*address=='.'){
+            *(ans+i++)= '['; 
+            *(ans+i++)= '.'; 
+            *(ans+i++)= ']'; 
+		}else{
+             *(ans+i++)= *address; 
+		}
+		address++;
+	}
+	*(ans+i)= '\0'; 
 	return ans;
 }
 int main(){
