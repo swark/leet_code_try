@@ -20,11 +20,11 @@ char * defangIPaddr(char * address){
 	char *ans=malloc(sizeof(char)*size);
 	while(address && *address!='\r' && *address!='\n' && *address!='\0'){   
 		if(*address=='.'){
-            *(ans+i++)= '['; 
-            *(ans+i++)= '.'; 
-            *(ans+i++)= ']'; 
+			*(ans+i++)= '['; 
+			*(ans+i++)= '.'; 
+			*(ans+i++)= ']'; 
 		}else{
-             *(ans+i++)= *address; 
+			*(ans+i++)= *address; 
 		}
 		address++;
 	}
