@@ -6,8 +6,50 @@ struct TreeNode {
 	struct TreeNode *left;
 	struct TreeNode *right;
 };
+int pre_order_sum_BST(struct TreeNode* root, int L, int R){
+	int sum=0;
+	if(root){
+		if((root->val)>=L && (root->val)<=R){
+			sum=sum+pre_order_sum_BST(root->left,L,R);
+			sum=sum+pre_order_sum_BST(root->right,L,R);
+			sum=sum+root->val;
+			//return root->val;
+		}else if((root->val)<L){
+			//pre_order_sum_BST(root->left);
+			sum=sum+pre_order_sum_BST(root->right,L,R);
+			//return 0;
+		}else if((root->val)>R){
+			sum=sum+pre_order_sum_BST(root->left,L,R);
+			//return 0;
+		}else{
+			printf("WTF\n");
+			return 0;
+		}
+		return sum;
+	}else{
+		return 0;
+	}
+}
 int rangeSumBST(struct TreeNode* root, int L, int R){
-	return 0;
+	int sum=0;
+	if(root){
+		if((root->val)>=L && (root->val)<=R){
+			sum=sum+rangeSumBST(root->left,L,R);
+			sum=sum+rangeSumBST(root->right,L,R);
+			sum=sum+root->val;
+			//return root->val;
+		}else if((root->val)<L){
+			//pre_order_sum_BST(root->left);
+			sum=sum+rangeSumBST(root->right,L,R);
+			//return 0;
+		}else if((root->val)>R){
+			sum=sum+rangeSumBST(root->left,L,R);
+			//return 0;
+		}
+		return sum;
+	}else{
+		return 0;
+	}
 }
 void insert_BST(struct TreeNode** root,struct TreeNode* insert_node){
 	struct TreeNode* temp_p,*parent;
@@ -58,6 +100,8 @@ void print_post_order_BST(struct TreeNode* root){
 void free_post_order_BST(struct TreeNode* root){
 	if(root){
 		//printf("%d ",root->val);
+		free_post_order_BST(root->left);
+		free_post_order_BST(root->right);
 		free(root);
 	}
 }
@@ -79,8 +123,15 @@ void print_BST(struct TreeNode* root){
 
 int main(int argc, char *argv[]){
 	//insert tree
-	int new_val=0;
+	int new_val=0,lower_bound=0,upper_bound=0,ret=0;
 	struct TreeNode* temp_p=NULL, *root=NULL;
+	if(argc==3){
+		lower_bound=atoi(argv[1]);
+		upper_bound=atoi(argv[2]);
+	}else{
+		printf("bad input\n");
+		return 0;
+	}
 	while(new_val!=-1){
 		scanf("%d",&new_val);
 		if(new_val==-1)
@@ -94,7 +145,10 @@ int main(int argc, char *argv[]){
 		}
 	}
 	print_BST(root);
-	//free_post_order_BST(root);
+	//ret=pre_order_sum_BST(root,lower_bound,upper_bound);
+	ret=rangeSumBST(root,lower_bound,upper_bound);
+	printf("ret=%d\n",ret);
+	free_post_order_BST(root);
 	//calculate the sum of tree in range
 	
 	return 0;
