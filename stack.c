@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "stack.h"
 
-list_node* push(list_node* top, int data)
+list_node* push_stack(list_node* top, int data)
 {
 	list_node* new_entry=(list_node*)malloc(1*sizeof(list_node));
 	new_entry->data=data;
@@ -15,21 +15,36 @@ list_node* push(list_node* top, int data)
 	return top;
 }
 
-list_node* pop(list_node* top, int data)
+list_node* pop_stack(list_node* top)
 {
-	return NULL;
+	list_node* poped=top;
+	top=top->link;
+	printf("pop out: %d\n",poped->data);
+	free(poped);
+	return top;
 }
 
 void print_stack(list_node* top)
 {
 	int idx=0;
 	list_node* p=top;
-	if(p){
+	while(p){
 		printf("%d: %d\n",idx++,p->data);
 		p=p->link;
 	}
 }
 
+void relese_stack(list_node* top)
+{
+	list_node* p=top;
+	printf("-----start free stack-----\n");
+	while(p){
+		top=top->link;
+		free(p);
+		p=top;
+	}
+	printf("-----end free stack-----\n");
+}
 
 int main(int argc, char *argv[]){
 	//insert tree
@@ -41,8 +56,12 @@ int main(int argc, char *argv[]){
 			print_stack(top);
 			break;
 		}
-		push(top,new_val);
-	}
+		top=push_stack(top,new_val);
+	}	
+	/*while(top){
+		top=pop_stack(top);
+	}*/
+	relese_stack(top);
 
 	
 	return 0;
